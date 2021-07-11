@@ -5,12 +5,18 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface PupilGroupRepository extends CrudRepository<PupilGroup, String> {
 
 
-    public List<PupilGroup> getAllBy();
+    List<PupilGroup> getAllBy();
 
-    public PupilGroup findByUniversityGroupId(Integer id);
+    PupilGroup findByUniversityGroupId(Integer id);
+
+    Optional<PupilGroup> getById(String id);
+
+
+
 }

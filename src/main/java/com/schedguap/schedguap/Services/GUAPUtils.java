@@ -1,4 +1,4 @@
-package com.schedguap.schedguap.Services.DataImport;
+package com.schedguap.schedguap.Services;
 
 import org.jgrapht.alg.util.Pair;
 
