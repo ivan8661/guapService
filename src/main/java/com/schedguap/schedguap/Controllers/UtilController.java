@@ -19,7 +19,7 @@ public class UtilController {
 
 
     @GetMapping(path="/import")
-    public ResponseEntity<AnswerTemplate<String>> authVK(@RequestBody String password) throws JSONException, UserException {
+    public ResponseEntity<String> authVK(@RequestBody String password) throws JSONException, UserException {
         JSONObject passwordObject = new JSONObject(password);
         if(!passwordObject.has("password")) {
             throw new UserException(403, "Forbidden", "ты чо сделать пытаешься, а?", "");
@@ -27,7 +27,7 @@ public class UtilController {
             importService.downloadData();
             importService.downloadLessons();
         }
-        return ResponseEntity.ok().body(new AnswerTemplate<>("successful", null));
+        return ResponseEntity.ok().body("successful");
     }
 
 }
