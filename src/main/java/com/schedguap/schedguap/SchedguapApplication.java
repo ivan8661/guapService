@@ -9,6 +9,11 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 @EnableEurekaClient
 public class SchedguapApplication {
 
+
+    public static Long SYNC_TIME = System.currentTimeMillis();
+    public static String CURRENT_WEEK = "odd";
+
+
     public static void main(String[] args) {
         SpringApplication.run(SchedguapApplication.class, args);
 
