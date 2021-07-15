@@ -1,4 +1,4 @@
-package com.schedguap.schedguap.Database.Entities;
+package com.schedguap.schedguap.Entities.DatabaseEntities;
 
 
 import javax.persistence.*;

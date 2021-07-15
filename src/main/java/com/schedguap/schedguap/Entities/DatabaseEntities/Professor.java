@@ -1,12 +1,12 @@
-package com.schedguap.schedguap.Database.Entities;
+package com.schedguap.schedguap.Entities.DatabaseEntities;
 
 import javax.persistence.Entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.json.JSONObject;
 
 import javax.persistence.*;
-import java.time.Instant;
 
 
 @Entity
@@ -19,9 +19,11 @@ public class Professor {
     private String id;
 
     @Column(name="full_name")
+    @JsonProperty("name")
     private String fullName;
 
     @Column(name="professor_university_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer professorUniversityId;
 
 

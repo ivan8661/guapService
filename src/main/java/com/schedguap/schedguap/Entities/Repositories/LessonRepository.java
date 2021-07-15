@@ -1,7 +1,7 @@
-package com.schedguap.schedguap.Database.Repositories;
+package com.schedguap.schedguap.Entities.Repositories;
 
 
-import com.schedguap.schedguap.Database.Entities.Lesson;
+import com.schedguap.schedguap.Entities.DatabaseEntities.Lesson;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 

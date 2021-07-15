@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @ControllerAdvice
 public class UniversityInfoController {
-
+    
     @GetMapping("/universityInfo")
     public ResponseEntity<String> universityInfo() throws JSONException {
 

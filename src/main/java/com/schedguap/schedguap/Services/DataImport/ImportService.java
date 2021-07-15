@@ -1,7 +1,7 @@
 package com.schedguap.schedguap.Services.DataImport;
 
-import com.schedguap.schedguap.Database.Entities.*;
-import com.schedguap.schedguap.Database.Repositories.*;
+import com.schedguap.schedguap.Entities.DatabaseEntities.*;
+import com.schedguap.schedguap.Entities.Repositories.*;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Services.DataImport.Entities.*;
 import com.schedguap.schedguap.Services.GUAPUtils;

@@ -1,11 +1,11 @@
-package com.schedguap.schedguap.Database.Entities;
+package com.schedguap.schedguap.Entities.DatabaseEntities;
 
 
 import javax.persistence.*;
 import java.util.Set;
 
 @Entity
-public class PupilGroup {
+public class Subject {
 
 
     @Id
@@ -15,20 +15,23 @@ public class PupilGroup {
     @Column(name="name")
     private String name;
 
-    @Column(name="group_university_id")
-    private Integer universityGroupId;
+    @Column(name="subject_university_id")
+    private Integer subjectUniversityId;
 
-    @ManyToMany
+    @OneToMany
     private Set<Lesson> lessons;
 
-    public PupilGroup() {
+
+
+
+    public Subject() {
+
     }
 
-
-    public PupilGroup(String id, String name, Integer universityGroupId) {
+    public Subject(String id, String name, Integer subjectUniversityId) {
         this.id = id;
         this.name = name;
-        this.universityGroupId = universityGroupId;
+        this.subjectUniversityId = subjectUniversityId;
     }
 
     public String getId() {
@@ -43,17 +46,16 @@ public class PupilGroup {
         return name;
     }
 
+    public Integer getSubjectUniversityId() {
+        return subjectUniversityId;
+    }
+
+    public void setSubjectUniversityId(Integer subjectUniversityId) {
+        this.subjectUniversityId = subjectUniversityId;
+    }
+
     public void setName(String name) {
         this.name = name;
-    }
-
-
-    public Integer getUniversityGroupId() {
-        return universityGroupId;
-    }
-
-    public void setUniversityGroupId(Integer universityGroupId) {
-        this.universityGroupId = universityGroupId;
     }
 
     public Set<Lesson> getLessons() {
