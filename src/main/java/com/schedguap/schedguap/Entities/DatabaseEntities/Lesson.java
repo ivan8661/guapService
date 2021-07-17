@@ -1,6 +1,8 @@
 package com.schedguap.schedguap.Entities.DatabaseEntities;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -9,6 +11,7 @@ public class Lesson {
 
     @Id
     @Column(name="lesson_id")
+    @JsonProperty("_id")
     private String id;
 
     @Column(name="start_name")
@@ -18,12 +21,14 @@ public class Lesson {
     private String endTime;
 
     @Column(name="number_lesson")
+    @JsonProperty("lessonNum")
     private int numLesson;
 
     @Column(name="day")
     private String day;
 
     @Column(name="room")
+    @JsonProperty("rooms")
     private String room;
 
     @Column(name="type")
@@ -37,6 +42,7 @@ public class Lesson {
     private Set<Professor> professors;
 
     @ManyToOne
+    @JoinColumn(name = "subject_id")
     private Subject subject;
 
     @ManyToMany
@@ -117,10 +123,6 @@ public class Lesson {
         this.type = type;
     }
 
-    public Set<Professor> getProfessors() {
-        return professors;
-    }
-
     public String getWeek() {
         return week;
     }
@@ -129,12 +131,8 @@ public class Lesson {
         this.week = week;
     }
 
-    public Set<PupilGroup> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Set<PupilGroup> groups) {
-        this.groups = groups;
+    public Set<Professor> getProfessors() {
+        return professors;
     }
 
     public void setProfessors(Set<Professor> professors) {
@@ -147,5 +145,13 @@ public class Lesson {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public Set<PupilGroup> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<PupilGroup> groups) {
+        this.groups = groups;
     }
 }

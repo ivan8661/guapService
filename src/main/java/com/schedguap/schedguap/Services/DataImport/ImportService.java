@@ -3,6 +3,7 @@ package com.schedguap.schedguap.Services.DataImport;
 import com.schedguap.schedguap.Entities.DatabaseEntities.*;
 import com.schedguap.schedguap.Entities.Repositories.*;
 import com.schedguap.schedguap.Exceptions.UserException;
+import com.schedguap.schedguap.SchedguapApplication;
 import com.schedguap.schedguap.Services.DataImport.Entities.*;
 import com.schedguap.schedguap.Services.GUAPUtils;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -19,6 +20,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.logging.Logger;
 
 @Component
 public class ImportService {
@@ -98,6 +100,7 @@ public class ImportService {
                 String day = GUAPUtils.getDay(guapLesson.getDay());
                 String room = guapLesson.getBuild() + "; " + guapLesson.getRooms();
                 String type = GUAPUtils.getType(guapLesson.getType());
+
                 Subject subject = subjectRepository.findBySubjectUniversityId(guapLesson.getItemId());
                 String week = GUAPUtils.getEven(guapLesson.getWeek());
 
@@ -114,11 +117,19 @@ public class ImportService {
                     professors.add(professorsRepository.findByProfessorUniversityId(p));
                 }
 
-
                 Lesson lesson = new Lesson(id, startTime, endTime, numLesson, day,
                         room, type, subject, professors, groups, week);
 
+                if(lesson.getSubject()!=null)
+                    System.out.println(lesson.getSubject().getName());
+
                 lessonRepository.save(lesson);
+
+
+                if(lessonRepository.findById(id).get().getSubject() != null){
+                    System.out.println(lessonRepository.findById(id).get().getSubject());
+                }
+
             }
         }
     }

@@ -19,9 +19,11 @@ public class PupilGroup {
     private String name;
 
     @Column(name="group_university_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer universityGroupId;
 
     @ManyToMany
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Lesson> lessons;
 
     public PupilGroup() {

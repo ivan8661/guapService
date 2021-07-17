@@ -1,5 +1,6 @@
 package com.schedguap.schedguap.Entities.DatabaseEntities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -10,6 +11,7 @@ public class Subject {
 
     @Id
     @Column(name="id")
+    @JsonProperty("_id")
     private String id;
 
     @Column(name="name")
@@ -19,6 +21,8 @@ public class Subject {
     private Integer subjectUniversityId;
 
     @OneToMany
+    @JoinColumn(name = "subject_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Lesson> lessons;
 
 
