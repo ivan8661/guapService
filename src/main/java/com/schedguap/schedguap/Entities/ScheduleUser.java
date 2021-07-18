@@ -1,4 +1,4 @@
-package com.schedguap.schedguap.Services.ScheduleUser;
+package com.schedguap.schedguap.Entities;
 
 public class ScheduleUser {
 

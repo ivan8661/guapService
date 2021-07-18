@@ -2,8 +2,8 @@ package com.schedguap.schedguap.Controllers;
 
 
 import com.schedguap.schedguap.Exceptions.UserException;
-import com.schedguap.schedguap.Services.ScheduleUser.ScheduleUser;
-import com.schedguap.schedguap.Services.ScheduleUser.ScheduleUserService;
+import com.schedguap.schedguap.Entities.ScheduleUser;
+import com.schedguap.schedguap.Services.ScheduleUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;

@@ -1,6 +1,6 @@
-package com.schedguap.schedguap.Database.Repositories;
+package com.schedguap.schedguap.Entities.Repositories;
 
-import com.schedguap.schedguap.Database.Entities.PupilGroup;
+import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -16,6 +16,7 @@ public interface PupilGroupRepository extends CrudRepository<PupilGroup, String>
     PupilGroup findByUniversityGroupId(Integer id);
 
     Optional<PupilGroup> getById(String id);
+
 
 
 

@@ -1,10 +1,11 @@
-package com.schedguap.schedguap.Services.ScheduleUser;
+package com.schedguap.schedguap.Services;
 
-import com.schedguap.schedguap.Database.Entities.Professor;
-import com.schedguap.schedguap.Database.Entities.PupilGroup;
-import com.schedguap.schedguap.Database.Repositories.ProfessorsRepository;
-import com.schedguap.schedguap.Database.Repositories.PupilGroupRepository;
+import com.schedguap.schedguap.Entities.DatabaseEntities.Professor;
+import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
+import com.schedguap.schedguap.Entities.Repositories.ProfessorsRepository;
+import com.schedguap.schedguap.Entities.Repositories.PupilGroupRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
+import com.schedguap.schedguap.Entities.ScheduleUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -28,7 +29,7 @@ public class ScheduleUserService {
 
     public ScheduleUser getScheduleUser(String id) throws UserException {
         Optional<PupilGroup> pupilGroup = pupilGroupRepository.findById(id);
-        Optional<Professor> professor = professorsRepository.getById(id);
+        Optional<Professor> professor = professorsRepository.findById(id);
         if(pupilGroup.isEmpty() && professor.isEmpty()) {
             throw new UserException(404, "404", "ScheduleUser doesn't exist", "check your scheduser id!!!");
         }

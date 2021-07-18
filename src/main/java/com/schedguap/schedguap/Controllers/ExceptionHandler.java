@@ -4,7 +4,10 @@ import com.schedguap.schedguap.Exceptions.ErrorResult;
 import com.schedguap.schedguap.Exceptions.UserException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 
+
+@ControllerAdvice
 public class ExceptionHandler {
 
     @org.springframework.web.bind.annotation.ExceptionHandler(UserException.class)
