@@ -17,6 +17,7 @@ public interface PupilGroupRepository extends CrudRepository<PupilGroup, String>
 
     Optional<PupilGroup> getById(String id);
 
+    Optional<PupilGroup> findPupilGroupByName(String name);
 
 
 

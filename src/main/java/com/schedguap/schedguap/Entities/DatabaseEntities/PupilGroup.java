@@ -68,4 +68,6 @@ public class PupilGroup {
     public void setLessons(Set<Lesson> lessons) {
         this.lessons = lessons;
     }
+
+
 }

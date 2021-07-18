@@ -20,16 +20,15 @@ import org.springframework.web.client.RestTemplate;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.logging.Logger;
 
 @Component
 public class ImportService {
 
-    private PupilGroupRepository pupilGroupRepository;
-    private BuildingRepository buildingRepository;
-    private LessonRepository lessonRepository;
-    private ProfessorsRepository professorsRepository;
-    private SubjectRepository subjectRepository;
+    private final PupilGroupRepository pupilGroupRepository;
+    private final BuildingRepository buildingRepository;
+    private final LessonRepository lessonRepository;
+    private final ProfessorsRepository professorsRepository;
+    private final SubjectRepository subjectRepository;
 
     @Autowired
     public ImportService(PupilGroupRepository pupilGroupRepository, BuildingRepository buildingRepository,
@@ -116,20 +115,9 @@ public class ImportService {
                 for (int p : professorList) {
                     professors.add(professorsRepository.findByProfessorUniversityId(p));
                 }
-
                 Lesson lesson = new Lesson(id, startTime, endTime, numLesson, day,
                         room, type, subject, professors, groups, week);
-
-                if(lesson.getSubject()!=null)
-                    System.out.println(lesson.getSubject().getName());
-
                 lessonRepository.save(lesson);
-
-
-                if(lessonRepository.findById(id).get().getSubject() != null){
-                    System.out.println(lessonRepository.findById(id).get().getSubject());
-                }
-
             }
         }
     }
