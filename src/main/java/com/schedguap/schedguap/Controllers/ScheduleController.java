@@ -2,6 +2,7 @@ package com.schedguap.schedguap.Controllers;
 
 
 import com.schedguap.schedguap.Entities.DatabaseEntities.Lesson;
+import com.schedguap.schedguap.Entities.DatabaseEntities.Subject;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +23,18 @@ public class ScheduleController {
         this.scheduleService = scheduleService;
     }
 
-    @GetMapping("/lessons/{scheduleUserId}")
+    @GetMapping("/schedule/{scheduleUserId}")
     public ResponseEntity<List<Lesson>> lessons(@PathVariable("scheduleUserId") String scheduleUserId) throws UserException {
         return ResponseEntity.ok().body(scheduleService.getLessons(scheduleUserId));
+    }
+
+    @GetMapping("lessons/{lessonId}")
+    public ResponseEntity<Lesson> lesson(@PathVariable("lessonId") String lessonId) throws UserException {
+        return ResponseEntity.ok().body(scheduleService.getLesson(lessonId));
+    }
+
+    @GetMapping("subjects/{subjectId}")
+    public ResponseEntity<Subject> subject(@PathVariable("subjectId") String subjectId) throws UserException {
+        return ResponseEntity.ok().body(scheduleService.getSubject(subjectId));
     }
 }
