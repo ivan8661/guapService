@@ -30,12 +30,4 @@ public class ProfessorService {
           throw new UserException(404, "404", "professor doesn't exist", "");
       }
     }
-
-
-
-
-
-
-
-
 }

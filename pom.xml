@@ -10,7 +10,6 @@
     </parent>
     <groupId>com.schedGUAP</groupId>
     <artifactId>schedguap</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
     <name>schedguap</name>
     <description>GUAP module for schedApp</description>
     <properties>
@@ -75,10 +74,15 @@
     </dependencies>
 
     <build>
+        <finalName>GUAP</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <mainClass>SchedguapApplication</mainClass>
+                    <addResources>true</addResources>
+                </configuration>
             </plugin>
         </plugins>
     </build>

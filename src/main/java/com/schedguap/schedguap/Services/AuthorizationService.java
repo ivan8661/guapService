@@ -58,14 +58,14 @@ public class AuthorizationService {
         JSONObject userInfoGson = new JSONObject(userInfo);
         JSONObject userGuap = userInfoGson.getJSONArray("user").getJSONObject(0);
 
-        /**
+        /*
          * get group through query to pro.guap by id
          */
         ResponseEntity<String> userAnswer = new RestTemplate().exchange("https://pro.guap.ru/getstudentprofile/" + userGuap.get("user_id"),
                 HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
         JSONObject userAnswerGson = new JSONObject(userAnswer.getBody());
         String numberGroup = userAnswerGson.getJSONObject("user").getString("grnum");
-        /**_________________________________________*/
+        /*_________________________________________*/
 
         JSONObject user = new JSONObject();
 

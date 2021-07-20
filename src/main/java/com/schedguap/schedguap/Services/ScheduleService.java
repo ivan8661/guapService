@@ -18,13 +18,13 @@ import java.util.Optional;
 @Service
 public class ScheduleService {
 
-    private LessonRepository lessonRepository;
+    private final LessonRepository lessonRepository;
 
-    private PupilGroupRepository pupilGroupRepository;
+    private final PupilGroupRepository pupilGroupRepository;
 
-    private ProfessorsRepository professorsRepository;
+    private final ProfessorsRepository professorsRepository;
 
-    private SubjectRepository subjectRepository;
+    private final SubjectRepository subjectRepository;
 
     @Autowired
     public ScheduleService(LessonRepository lessonRepository, PupilGroupRepository pupilGroupRepository,
@@ -34,11 +34,6 @@ public class ScheduleService {
         this.professorsRepository = professorsRepository;
         this.subjectRepository = subjectRepository;
     }
-
-
-
-
-
 
     public List<Lesson> getLessons(String scheduleUserId) throws UserException {
 
