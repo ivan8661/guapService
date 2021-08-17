@@ -2,8 +2,7 @@ package com.schedguap.schedguap.Entities.DatabaseEntities;
 
 import javax.persistence.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonInclude;
+import GetGraphQL.SearchableField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -20,7 +19,8 @@ public class Professor {
 
     @Column(name="full_name")
     @JsonProperty("name")
-    private String fullName;
+    @SearchableField
+    private String name;
 
     @Column(name="professor_university_id")
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
@@ -32,7 +32,7 @@ public class Professor {
 
     public Professor(String id, String fullName, Integer professorUniversityId) {
         this.id = id;
-        this.fullName = fullName;
+        this.name = fullName;
         this.professorUniversityId = professorUniversityId;
     }
 
@@ -44,12 +44,12 @@ public class Professor {
         this.id = id;
     }
 
-    public String getFullName() {
-        return fullName;
+    public String getName() {
+        return name;
     }
 
-    public void setFullName(String fullName) {
-        this.fullName = fullName;
+    public void setName(String fullName) {
+        this.name = fullName;
     }
 
     public Integer getProfessorUniversityId() {

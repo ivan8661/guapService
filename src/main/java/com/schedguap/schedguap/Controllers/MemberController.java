@@ -8,12 +8,10 @@ import com.schedguap.schedguap.Services.GroupService;
 import com.schedguap.schedguap.Services.ProfessorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @ControllerAdvice
@@ -30,8 +28,8 @@ public class MemberController {
     }
 
     @GetMapping("/professors")
-    public ResponseEntity<List<Professor>> professors() {
-        return ResponseEntity.ok().body(professorService.getProfessors());
+    public ResponseEntity<List<Professor>> professors(@RequestParam Map<String, String> params) throws NoSuchFieldException {
+        return ResponseEntity.ok().body(professorService.getProfessors(params));
     }
 
     @GetMapping("/professors/{professorId}")
@@ -40,8 +38,8 @@ public class MemberController {
     }
 
     @GetMapping("/groups")
-    public ResponseEntity<List<PupilGroup>> groups() {
-        return ResponseEntity.ok().body(groupService.getGroups());
+    public ResponseEntity<List<PupilGroup>> groups(@RequestParam Map<String, String> params) throws NoSuchFieldException {
+        return ResponseEntity.ok().body(groupService.getGroups(params));
     }
 
     @GetMapping("/groups/{groupId}")

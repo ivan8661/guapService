@@ -12,8 +12,10 @@ import com.schedguap.schedguap.Exceptions.UserException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 public class ScheduleService {
@@ -46,7 +48,7 @@ public class ScheduleService {
         if(professor.isPresent()){
             return lessonRepository.getAllByProfessors(professor.get());
         }
-        throw new UserException(404, "404", "ScheduleUser Doesn't exist!", "");
+        throw new UserException(404, "not_found", "ScheduleUser Doesn't exist!", "");
     }
 
     public Lesson getLesson(String lessonId) throws UserException {
@@ -54,7 +56,7 @@ public class ScheduleService {
         if(lesson.isPresent()) {
             return lesson.get();
         } else {
-            throw new UserException(404, "404", "Lesson doesn't exist!", " ");
+            throw new UserException(404, "not_found", "Lesson doesn't exist!", " ");
         }
     }
 
@@ -63,7 +65,16 @@ public class ScheduleService {
         if(subject.isPresent()) {
             return subject.get();
         } else {
-            throw new UserException(404, "404", "Subject doesn't exist!", " ");
+            throw new UserException(404, "not_found", "Subject doesn't exist!", " ");
         }
+    }
+
+    public List<Subject> getSubjects(Set<String> subjects) {
+        List<Subject> subjectList = new ArrayList<>();
+        for(String subjectId : subjects) {
+            Optional<Subject> subjectOpt = subjectRepository.findById(subjectId);
+            subjectOpt.ifPresent(subjectList::add);
+        }
+        return subjectList;
     }
 }

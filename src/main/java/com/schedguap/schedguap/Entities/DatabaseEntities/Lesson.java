@@ -22,14 +22,14 @@ public class Lesson {
 
     @Column(name="number_lesson")
     @JsonProperty("lessonNum")
-    private int numLesson;
+    private int lessonNum;
 
     @Column(name="day")
     private String day;
 
     @Column(name="room")
     @JsonProperty("rooms")
-    private String room;
+    private String rooms;
 
     @Column(name="type")
     private String type;
@@ -53,13 +53,13 @@ public class Lesson {
     }
 
 
-    public Lesson(String id, String startTime, String endTime, int numLesson, String day, String room, String type, Subject subject, Set<Professor> professors, Set<PupilGroup> pupilGroups,  String week) {
+    public Lesson(String id, String startTime, String endTime, int numLesson, String day, String rooms, String type, Subject subject, Set<Professor> professors, Set<PupilGroup> pupilGroups, String week) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.numLesson = numLesson;
+        this.lessonNum = numLesson;
         this.day = day;
-        this.room = room;
+        this.rooms = rooms;
         this.type = type;
         this.professors = professors;
         this.subject = subject;
@@ -91,12 +91,12 @@ public class Lesson {
         this.endTime = endTime;
     }
 
-    public int getNumLesson() {
-        return numLesson;
+    public int getLessonNum() {
+        return lessonNum;
     }
 
-    public void setNumLesson(int numLesson) {
-        this.numLesson = numLesson;
+    public void setLessonNum(int numLesson) {
+        this.lessonNum = numLesson;
     }
 
     public String getDay() {
@@ -107,12 +107,12 @@ public class Lesson {
         this.day = day;
     }
 
-    public String getRoom() {
-        return room;
+    public String getRooms() {
+        return rooms;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public void setRooms(String room) {
+        this.rooms = room;
     }
 
     public String getType() {

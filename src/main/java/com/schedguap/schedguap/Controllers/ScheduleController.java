@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @ControllerAdvice
@@ -36,5 +37,9 @@ public class ScheduleController {
     @GetMapping("subjects/{subjectId}")
     public ResponseEntity<Subject> subject(@PathVariable("subjectId") String subjectId) throws UserException {
         return ResponseEntity.ok().body(scheduleService.getSubject(subjectId));
+    }
+    @PostMapping("subjects")
+    public ResponseEntity<List<Subject>> subjects(@RequestBody Set<String> subjects) {
+        return ResponseEntity.ok().body(scheduleService.getSubjects(subjects));
     }
 }

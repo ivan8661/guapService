@@ -55,7 +55,7 @@ public class ImportService {
                 HttpMethod.GET, entity, new ParameterizedTypeReference<>(){});
 
         if(buildings.getBody() == null || subjects.getBody() == null || groups.getBody() == null || professors.getBody() == null){
-            throw new UserException(500, "500", "не удалось подключиться к расписанию Гуапа", " ");
+            throw new UserException(500, "internal_server_error", "не удалось подключиться к расписанию Гуапа", " ");
         }
 
         for(BuildingEntity buildingGUAP : buildings.getBody()){
@@ -100,7 +100,7 @@ public class ImportService {
                 String room = guapLesson.getBuild() + "; " + guapLesson.getRooms();
                 String type = GUAPUtils.getType(guapLesson.getType());
 
-                Subject subject = subjectRepository.findBySubjectUniversityId(guapLesson.getItemId());
+                Subject subject = subjectRepository.findByName(guapLesson.getDisc()).get(0);
                 String week = GUAPUtils.getEven(guapLesson.getWeek());
 
 

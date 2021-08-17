@@ -1,6 +1,10 @@
 package com.schedguap.schedguap.Entities.Repositories;
 
+import com.schedguap.schedguap.Entities.DatabaseEntities.Professor;
 import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
@@ -18,6 +22,10 @@ public interface PupilGroupRepository extends CrudRepository<PupilGroup, String>
     Optional<PupilGroup> getById(String id);
 
     Optional<PupilGroup> findPupilGroupByName(String name);
+
+    Page<PupilGroup> findAll(Specification<PupilGroup> spc, Pageable pageable);
+
+    List<PupilGroup> findAll(Specification<PupilGroup> spc);
 
 
 

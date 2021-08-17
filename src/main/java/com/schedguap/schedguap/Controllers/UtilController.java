@@ -22,7 +22,7 @@ public class UtilController {
     public ResponseEntity<String> authVK(@RequestBody String password) throws JSONException, UserException {
         JSONObject passwordObject = new JSONObject(password);
         if(!passwordObject.has("password")) {
-            throw new UserException(403, "Forbidden", "ты чо сделать пытаешься, а?", "");
+            throw new UserException(403, "forbidden", "ты чо сделать пытаешься, а?", "");
         } else {
             importService.downloadData();
             importService.downloadLessons();
