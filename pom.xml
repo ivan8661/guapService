@@ -8,13 +8,23 @@
         <version>2.5.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
+
     <groupId>com.schedGUAP</groupId>
     <artifactId>schedguap</artifactId>
     <name>schedguap</name>
     <description>GUAP module for schedApp</description>
+
     <properties>
         <java.version>11</java.version>
     </properties>
+
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
+
     <dependencies>
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -76,9 +86,9 @@
             <version>2.2.3</version>
         </dependency>
         <dependency>
-            <groupId>org.restfulapi</groupId>
+            <groupId>com.github.ivan8661</groupId>
             <artifactId>GetGraphQL</artifactId>
-            <version>1.0.0</version>
+            <version>dev-a7caaadf3a-1</version>
         </dependency>
 
     </dependencies>
