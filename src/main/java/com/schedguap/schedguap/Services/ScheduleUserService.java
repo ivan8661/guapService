@@ -31,12 +31,12 @@ public class ScheduleUserService {
         Optional<PupilGroup> pupilGroup = pupilGroupRepository.findById(id);
         Optional<Professor> professor = professorsRepository.findById(id);
         if(pupilGroup.isEmpty() && professor.isEmpty()) {
-            throw new UserException(404, "404", "ScheduleUser doesn't exist", "check your scheduser id!!!");
+            throw new UserException(404, "not_found", "ScheduleUser doesn't exist", "check your scheduser id!!!");
         }
 
         return pupilGroup.map(
                 group -> new ScheduleUser(group.getId(), group.getName()))
-                .orElseGet(() -> new ScheduleUser(professor.get().getId(), professor.get().getFullName())
+                .orElseGet(() -> new ScheduleUser(professor.get().getId(), professor.get().getName())
                 );
 
     }

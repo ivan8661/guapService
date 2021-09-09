@@ -1,6 +1,7 @@
 package com.schedguap.schedguap.Entities.DatabaseEntities;
 
 
+import GetGraphQL.SearchableField;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import javax.persistence.*;
@@ -16,12 +17,15 @@ public class PupilGroup {
     private String id;
 
     @Column(name="name")
+    @SearchableField
     private String name;
 
     @Column(name="group_university_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Integer universityGroupId;
 
     @ManyToMany
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Lesson> lessons;
 
     public PupilGroup() {
@@ -66,4 +70,6 @@ public class PupilGroup {
     public void setLessons(Set<Lesson> lessons) {
         this.lessons = lessons;
     }
+
+
 }

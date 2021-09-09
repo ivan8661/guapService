@@ -1,6 +1,8 @@
 package com.schedguap.schedguap.Entities.DatabaseEntities;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import javax.persistence.*;
 import java.util.Set;
 
@@ -9,6 +11,7 @@ public class Lesson {
 
     @Id
     @Column(name="lesson_id")
+    @JsonProperty("_id")
     private String id;
 
     @Column(name="start_name")
@@ -18,13 +21,15 @@ public class Lesson {
     private String endTime;
 
     @Column(name="number_lesson")
-    private int numLesson;
+    @JsonProperty("lessonNum")
+    private int lessonNum;
 
     @Column(name="day")
     private String day;
 
     @Column(name="room")
-    private String room;
+    @JsonProperty("rooms")
+    private String rooms;
 
     @Column(name="type")
     private String type;
@@ -37,6 +42,7 @@ public class Lesson {
     private Set<Professor> professors;
 
     @ManyToOne
+    @JoinColumn(name = "subject_id")
     private Subject subject;
 
     @ManyToMany
@@ -47,13 +53,13 @@ public class Lesson {
     }
 
 
-    public Lesson(String id, String startTime, String endTime, int numLesson, String day, String room, String type, Subject subject, Set<Professor> professors, Set<PupilGroup> pupilGroups,  String week) {
+    public Lesson(String id, String startTime, String endTime, int numLesson, String day, String rooms, String type, Subject subject, Set<Professor> professors, Set<PupilGroup> pupilGroups, String week) {
         this.id = id;
         this.startTime = startTime;
         this.endTime = endTime;
-        this.numLesson = numLesson;
+        this.lessonNum = numLesson;
         this.day = day;
-        this.room = room;
+        this.rooms = rooms;
         this.type = type;
         this.professors = professors;
         this.subject = subject;
@@ -85,12 +91,12 @@ public class Lesson {
         this.endTime = endTime;
     }
 
-    public int getNumLesson() {
-        return numLesson;
+    public int getLessonNum() {
+        return lessonNum;
     }
 
-    public void setNumLesson(int numLesson) {
-        this.numLesson = numLesson;
+    public void setLessonNum(int numLesson) {
+        this.lessonNum = numLesson;
     }
 
     public String getDay() {
@@ -101,12 +107,12 @@ public class Lesson {
         this.day = day;
     }
 
-    public String getRoom() {
-        return room;
+    public String getRooms() {
+        return rooms;
     }
 
-    public void setRoom(String room) {
-        this.room = room;
+    public void setRooms(String room) {
+        this.rooms = room;
     }
 
     public String getType() {
@@ -117,10 +123,6 @@ public class Lesson {
         this.type = type;
     }
 
-    public Set<Professor> getProfessors() {
-        return professors;
-    }
-
     public String getWeek() {
         return week;
     }
@@ -129,12 +131,8 @@ public class Lesson {
         this.week = week;
     }
 
-    public Set<PupilGroup> getGroups() {
-        return groups;
-    }
-
-    public void setGroups(Set<PupilGroup> groups) {
-        this.groups = groups;
+    public Set<Professor> getProfessors() {
+        return professors;
     }
 
     public void setProfessors(Set<Professor> professors) {
@@ -147,5 +145,13 @@ public class Lesson {
 
     public void setSubject(Subject subject) {
         this.subject = subject;
+    }
+
+    public Set<PupilGroup> getGroups() {
+        return groups;
+    }
+
+    public void setGroups(Set<PupilGroup> groups) {
+        this.groups = groups;
     }
 }

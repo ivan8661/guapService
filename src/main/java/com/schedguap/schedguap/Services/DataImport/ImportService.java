@@ -3,6 +3,7 @@ package com.schedguap.schedguap.Services.DataImport;
 import com.schedguap.schedguap.Entities.DatabaseEntities.*;
 import com.schedguap.schedguap.Entities.Repositories.*;
 import com.schedguap.schedguap.Exceptions.UserException;
+import com.schedguap.schedguap.SchedguapApplication;
 import com.schedguap.schedguap.Services.DataImport.Entities.*;
 import com.schedguap.schedguap.Services.GUAPUtils;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -23,11 +24,11 @@ import java.util.Set;
 @Component
 public class ImportService {
 
-    private PupilGroupRepository pupilGroupRepository;
-    private BuildingRepository buildingRepository;
-    private LessonRepository lessonRepository;
-    private ProfessorsRepository professorsRepository;
-    private SubjectRepository subjectRepository;
+    private final PupilGroupRepository pupilGroupRepository;
+    private final BuildingRepository buildingRepository;
+    private final LessonRepository lessonRepository;
+    private final ProfessorsRepository professorsRepository;
+    private final SubjectRepository subjectRepository;
 
     @Autowired
     public ImportService(PupilGroupRepository pupilGroupRepository, BuildingRepository buildingRepository,
@@ -54,7 +55,7 @@ public class ImportService {
                 HttpMethod.GET, entity, new ParameterizedTypeReference<>(){});
 
         if(buildings.getBody() == null || subjects.getBody() == null || groups.getBody() == null || professors.getBody() == null){
-            throw new UserException(500, "500", "не удалось подключиться к расписанию Гуапа", " ");
+            throw new UserException(500, "internal_server_error", "не удалось подключиться к расписанию Гуапа", " ");
         }
 
         for(BuildingEntity buildingGUAP : buildings.getBody()){
@@ -98,7 +99,8 @@ public class ImportService {
                 String day = GUAPUtils.getDay(guapLesson.getDay());
                 String room = guapLesson.getBuild() + "; " + guapLesson.getRooms();
                 String type = GUAPUtils.getType(guapLesson.getType());
-                Subject subject = subjectRepository.findBySubjectUniversityId(guapLesson.getItemId());
+
+                Subject subject = subjectRepository.findByName(guapLesson.getDisc()).get(0);
                 String week = GUAPUtils.getEven(guapLesson.getWeek());
 
 
@@ -113,11 +115,8 @@ public class ImportService {
                 for (int p : professorList) {
                     professors.add(professorsRepository.findByProfessorUniversityId(p));
                 }
-
-
                 Lesson lesson = new Lesson(id, startTime, endTime, numLesson, day,
                         room, type, subject, professors, groups, week);
-
                 lessonRepository.save(lesson);
             }
         }

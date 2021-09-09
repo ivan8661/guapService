@@ -1,0 +1,35 @@
+version: "3"
+services:
+  guap:
+    image: guap
+    restart: on-failure
+    environment:
+      - WAIT_HOSTS=mysql:3308
+      - WAIT_HOSTS_TIMEOUT=500
+      - WAIT_SLEEP_INTERVAL=30
+      - WAIT_HOST_CONNECT_TIMEOUT=30
+      - SPRING_APPLICATION_NAME=guap
+    ports:
+      - "8070:8070"
+    networks:
+      - guap_network
+      - eureka_network
+    depends_on:
+      - guap_db
+
+  guap_db:
+    hostname: mysql
+    restart: always
+    image: mysql:8
+    networks:
+      - guap_network
+    ports:
+      - "3308:3306"
+    environment:
+      - MYSQL_ROOT_PASSWORD=aw4cha3vaith
+
+networks:
+  guap_network:
+  eureka_network:
+    name: eureka_network
+    external: true

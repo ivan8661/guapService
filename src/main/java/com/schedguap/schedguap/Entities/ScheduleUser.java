@@ -1,9 +1,12 @@
 package com.schedguap.schedguap.Entities;
 
+import GetGraphQL.SearchableField;
+
 public class ScheduleUser {
 
     private String id;
 
+    @SearchableField
     private String name;
 
     public ScheduleUser(String id, String name) {

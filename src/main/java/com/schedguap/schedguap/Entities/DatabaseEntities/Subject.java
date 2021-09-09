@@ -1,6 +1,7 @@
 package com.schedguap.schedguap.Entities.DatabaseEntities;
 
-
+import GetGraphQL.SearchableField;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import javax.persistence.*;
 import java.util.Set;
 
@@ -10,15 +11,19 @@ public class Subject {
 
     @Id
     @Column(name="id")
+    @JsonProperty("_id")
     private String id;
 
     @Column(name="name")
+    @SearchableField
     private String name;
 
     @Column(name="subject_university_id")
     private Integer subjectUniversityId;
 
     @OneToMany
+    @JoinColumn(name = "subject_id")
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private Set<Lesson> lessons;
 
 
