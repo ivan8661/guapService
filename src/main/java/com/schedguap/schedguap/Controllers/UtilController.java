@@ -2,6 +2,7 @@ package com.schedguap.schedguap.Controllers;
 
 
 import com.schedguap.schedguap.Exceptions.UserException;
+import com.schedguap.schedguap.Exceptions.UserExceptionType;
 import com.schedguap.schedguap.Services.DataImport.ImportService;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,7 +23,7 @@ public class UtilController {
     public ResponseEntity<String> authVK(@RequestBody String password) throws JSONException, UserException {
         JSONObject passwordObject = new JSONObject(password);
         if(!passwordObject.has("password")) {
-            throw new UserException(403, "forbidden", "ты чо сделать пытаешься, а?", "");
+            throw new UserException(UserExceptionType.FORBIDDEN, null, null);
         } else {
             importService.downloadData();
             importService.downloadLessons();

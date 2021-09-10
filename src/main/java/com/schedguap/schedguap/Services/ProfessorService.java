@@ -5,6 +5,7 @@ import GetGraphQL.QueryParametersBuilder;
 import com.schedguap.schedguap.Entities.DatabaseEntities.Professor;
 import com.schedguap.schedguap.Entities.Repositories.ProfessorsRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
+import com.schedguap.schedguap.Exceptions.UserExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
@@ -38,7 +39,7 @@ public class ProfessorService {
       if(professor.isPresent()) {
           return professor.get();
       } else {
-          throw new UserException(404, "not_found", "professor doesn't exist", "");
+          throw new UserException(UserExceptionType.OBJECT_NOT_FOUND, "professor doesn't exist", null);
       }
     }
 }

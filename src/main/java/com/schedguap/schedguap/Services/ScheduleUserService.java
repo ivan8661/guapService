@@ -6,6 +6,7 @@ import com.schedguap.schedguap.Entities.Repositories.ProfessorsRepository;
 import com.schedguap.schedguap.Entities.Repositories.PupilGroupRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Entities.ScheduleUser;
+import com.schedguap.schedguap.Exceptions.UserExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -31,7 +32,7 @@ public class ScheduleUserService {
         Optional<PupilGroup> pupilGroup = pupilGroupRepository.findById(id);
         Optional<Professor> professor = professorsRepository.findById(id);
         if(pupilGroup.isEmpty() && professor.isEmpty()) {
-            throw new UserException(404, "not_found", "ScheduleUser doesn't exist", "check your scheduser id!!!");
+            throw new UserException(UserExceptionType.OBJECT_NOT_FOUND, "ScheduleUser doesn't exist", null);
         }
 
         return pupilGroup.map(

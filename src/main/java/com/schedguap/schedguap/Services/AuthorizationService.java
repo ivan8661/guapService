@@ -4,6 +4,7 @@ package com.schedguap.schedguap.Services;
 import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
 import com.schedguap.schedguap.Entities.Repositories.PupilGroupRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
+import com.schedguap.schedguap.Exceptions.UserExceptionType;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,7 +37,7 @@ public class AuthorizationService {
         String password = reg.optString("servicePassword");
 
         if(login == null || password == null){
-            throw new UserException(500, "bad_request", "not_acceptable", " ");
+            throw new UserException(UserExceptionType.BAD_REQUEST, null, null);
         } else {
             cookie = getCookie(login, password);
         }
@@ -109,7 +110,7 @@ public class AuthorizationService {
         if(cookie != null) {
             cookie = cookie.substring(0, cookie.indexOf(';'));
         } else {
-            throw new UserException(500, "validation_error", "incorrect input data", "");
+            throw new UserException(UserExceptionType.VALIDATION_ERROR, "incorrect input data", null);
         }
 
         headers.set("Cookie", cookie);
@@ -124,7 +125,7 @@ public class AuthorizationService {
         String secondCookie = cookie2.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
 
         if(secondCookie == null)
-            throw new UserException(500, "validation_error", "неверный логин или пароль", "");
+            throw new UserException(UserExceptionType.VALIDATION_ERROR, "неверный логин или пароль", null);
 
         secondCookie = secondCookie.substring(0, secondCookie.indexOf(";"));
 
