@@ -9,6 +9,7 @@ import com.schedguap.schedguap.Entities.Repositories.ProfessorsRepository;
 import com.schedguap.schedguap.Entities.Repositories.PupilGroupRepository;
 import com.schedguap.schedguap.Entities.Repositories.SubjectRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
+import com.schedguap.schedguap.Exceptions.UserExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -48,7 +49,7 @@ public class ScheduleService {
         if(professor.isPresent()){
             return lessonRepository.getAllByProfessors(professor.get());
         }
-        throw new UserException(404, "not_found", "ScheduleUser Doesn't exist!", "");
+        throw new UserException(UserExceptionType.OBJECT_NOT_FOUND, "ScheduleUser Doesn't exist!", null);
     }
 
     public Lesson getLesson(String lessonId) throws UserException {
@@ -56,7 +57,7 @@ public class ScheduleService {
         if(lesson.isPresent()) {
             return lesson.get();
         } else {
-            throw new UserException(404, "not_found", "Lesson doesn't exist!", " ");
+            throw new UserException(UserExceptionType.OBJECT_NOT_FOUND, "Lesson doesn't exist!", null);
         }
     }
 
@@ -65,7 +66,7 @@ public class ScheduleService {
         if(subject.isPresent()) {
             return subject.get();
         } else {
-            throw new UserException(404, "not_found", "Subject doesn't exist!", " ");
+            throw new UserException(UserExceptionType.OBJECT_NOT_FOUND, "Subject doesn't exist!", null);
         }
     }
 

@@ -3,6 +3,7 @@ package com.schedguap.schedguap.Services.DataImport;
 import com.schedguap.schedguap.Entities.DatabaseEntities.*;
 import com.schedguap.schedguap.Entities.Repositories.*;
 import com.schedguap.schedguap.Exceptions.UserException;
+import com.schedguap.schedguap.Exceptions.UserExceptionType;
 import com.schedguap.schedguap.SchedguapApplication;
 import com.schedguap.schedguap.Services.DataImport.Entities.*;
 import com.schedguap.schedguap.Services.GUAPUtils;
@@ -55,7 +56,7 @@ public class ImportService {
                 HttpMethod.GET, entity, new ParameterizedTypeReference<>(){});
 
         if(buildings.getBody() == null || subjects.getBody() == null || groups.getBody() == null || professors.getBody() == null){
-            throw new UserException(500, "internal_server_error", "не удалось подключиться к расписанию Гуапа", " ");
+            throw new UserException(UserExceptionType.SERVER_ERROR,"не удалось подключиться к расписанию Гуапа",null);
         }
 
         for(BuildingEntity buildingGUAP : buildings.getBody()){
