@@ -3,6 +3,7 @@ package com.schedguap.schedguap.Controllers;
 
 import com.schedguap.schedguap.Entities.DatabaseEntities.Professor;
 import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
+import com.schedguap.schedguap.Entities.ListAnswer;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Services.GroupService;
 import com.schedguap.schedguap.Services.ProfessorService;
@@ -28,7 +29,7 @@ public class MemberController {
     }
 
     @GetMapping("/professors")
-    public ResponseEntity<List<Professor>> professors(@RequestParam Map<String, String> params) throws NoSuchFieldException {
+    public ResponseEntity<ListAnswer<Professor>> professors(@RequestParam Map<String, String> params) throws NoSuchFieldException {
         return ResponseEntity.ok().body(professorService.getProfessors(params));
     }
 
@@ -38,7 +39,7 @@ public class MemberController {
     }
 
     @GetMapping("/groups")
-    public ResponseEntity<List<PupilGroup>> groups(@RequestParam Map<String, String> params) throws NoSuchFieldException {
+    public ResponseEntity<ListAnswer<PupilGroup>> groups(@RequestParam Map<String, String> params) throws NoSuchFieldException {
         return ResponseEntity.ok().body(groupService.getGroups(params));
     }
 
