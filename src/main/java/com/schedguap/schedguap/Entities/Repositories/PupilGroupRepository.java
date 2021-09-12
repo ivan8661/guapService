@@ -26,7 +26,4 @@ public interface PupilGroupRepository extends CrudRepository<PupilGroup, String>
     Page<PupilGroup> findAll(Specification<PupilGroup> spc, Pageable pageable);
 
     List<PupilGroup> findAll(Specification<PupilGroup> spc);
-
-
-
 }

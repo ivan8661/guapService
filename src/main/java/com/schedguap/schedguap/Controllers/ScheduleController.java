@@ -3,6 +3,7 @@ package com.schedguap.schedguap.Controllers;
 
 import com.schedguap.schedguap.Entities.DatabaseEntities.Lesson;
 import com.schedguap.schedguap.Entities.DatabaseEntities.Subject;
+import com.schedguap.schedguap.Entities.ListAnswer;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Services.ScheduleService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class ScheduleController {
     }
 
     @GetMapping("/schedule/{scheduleUserId}")
-    public ResponseEntity<List<Lesson>> lessons(@PathVariable("scheduleUserId") String scheduleUserId) throws UserException {
+    public ResponseEntity<ListAnswer<Lesson>> lessons(@PathVariable("scheduleUserId") String scheduleUserId) throws UserException {
         return ResponseEntity.ok().body(scheduleService.getLessons(scheduleUserId));
     }
 

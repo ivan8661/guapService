@@ -4,6 +4,7 @@ import com.schedguap.schedguap.Entities.DatabaseEntities.Lesson;
 import com.schedguap.schedguap.Entities.DatabaseEntities.Professor;
 import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
 import com.schedguap.schedguap.Entities.DatabaseEntities.Subject;
+import com.schedguap.schedguap.Entities.ListAnswer;
 import com.schedguap.schedguap.Entities.Repositories.LessonRepository;
 import com.schedguap.schedguap.Entities.Repositories.ProfessorsRepository;
 import com.schedguap.schedguap.Entities.Repositories.PupilGroupRepository;
@@ -38,16 +39,18 @@ public class ScheduleService {
         this.subjectRepository = subjectRepository;
     }
 
-    public List<Lesson> getLessons(String scheduleUserId) throws UserException {
+    public ListAnswer<Lesson> getLessons(String scheduleUserId) throws UserException {
 
         Optional<PupilGroup> pupilGroup = pupilGroupRepository.findById(scheduleUserId);
         Optional<Professor> professor = professorsRepository.findById(scheduleUserId);
 
         if(pupilGroup.isPresent()){
-            return lessonRepository.getAllByGroups(pupilGroup.get());
+            List<Lesson> lessons = lessonRepository.getAllByGroups(pupilGroup.get());
+            return new ListAnswer<>(lessons, lessons.size());
         }
         if(professor.isPresent()){
-            return lessonRepository.getAllByProfessors(professor.get());
+            List<Lesson> lessons = lessonRepository.getAllByProfessors(professor.get());
+            return new ListAnswer<>(lessons, lessons.size());
         }
         throw new UserException(UserExceptionType.OBJECT_NOT_FOUND, "ScheduleUser Doesn't exist!", null);
     }
