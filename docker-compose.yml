@@ -1,7 +1,7 @@
 version: "3"
 services:
   guap:
-    image: guap
+    image: schedapp/suai
     restart: on-failure
     environment:
       - WAIT_HOSTS=mysql:3308
