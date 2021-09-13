@@ -8,11 +8,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.EnableScheduling;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.web.bind.annotation.*;
 
 @ControllerAdvice
 @RestController
 @RequestMapping("guap")
+@EnableScheduling
 public class UtilController {
 
     @Autowired
@@ -20,13 +23,14 @@ public class UtilController {
 
 
     @GetMapping(path="/import")
-    public ResponseEntity<String> authVK(@RequestBody String password) throws JSONException, UserException {
+    public ResponseEntity<String> importEndPoint(@RequestBody String password) throws JSONException, UserException {
         JSONObject passwordObject = new JSONObject(password);
         if(!passwordObject.has("password")) {
             throw new UserException(UserExceptionType.FORBIDDEN, null, null);
         } else {
             importService.downloadData();
             importService.downloadLessons();
+            importService.updateScheduleInfo();
         }
         return ResponseEntity.ok().body("successful");
     }
