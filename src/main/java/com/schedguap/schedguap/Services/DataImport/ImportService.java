@@ -98,7 +98,7 @@ public class ImportService {
                 String endTime = GUAPUtils.getStartEndTime(guapLesson.getLess()).getSecond();
                 int numLesson = guapLesson.getLess();
                 String day = GUAPUtils.getDay(guapLesson.getDay());
-                String room = guapLesson.getBuild() + "; " + guapLesson.getRooms();
+                String room = guapLesson.getBuild() + ", " + guapLesson.getRooms();
                 String type = GUAPUtils.getType(guapLesson.getType());
 
                 Subject subject = subjectRepository.findByName(guapLesson.getDisc()).get(0);
