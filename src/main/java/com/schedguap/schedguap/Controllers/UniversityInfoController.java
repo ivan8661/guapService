@@ -1,10 +1,15 @@
 package com.schedguap.schedguap.Controllers;
 
 
+import com.schedguap.schedguap.Entities.DatabaseEntities.ScheduleUpdate;
 import com.schedguap.schedguap.Entities.News;
+import com.schedguap.schedguap.Entities.Repositories.ScheduleUpdateRepository;
+import com.schedguap.schedguap.Exceptions.UserException;
+import com.schedguap.schedguap.Exceptions.UserExceptionType;
 import com.schedguap.schedguap.SchedguapApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,17 +20,30 @@ import java.util.LinkedList;
 @RestController
 @ControllerAdvice
 public class UniversityInfoController {
-    
+
+
+    private ScheduleUpdateRepository scheduleUpdateRepository;
+
+
+    @Autowired
+    public UniversityInfoController(ScheduleUpdateRepository scheduleUpdateRepository) {
+            this.scheduleUpdateRepository = scheduleUpdateRepository;
+    }
+
     @GetMapping("/universityInfo")
-    public ResponseEntity<String> universityInfo() throws JSONException {
+    public ResponseEntity<String> universityInfo() throws JSONException, UserException {
 
         JSONObject universityInfo = new JSONObject();
+        ScheduleUpdate scheduleUpdate = scheduleUpdateRepository.findByName("GUAP");
+        if(scheduleUpdate==null)
+            throw new UserException(UserExceptionType.OBJECT_NOT_FOUND, null, null);
+
 
         universityInfo.put("_id", "GUAP");
         universityInfo.put("name", "ГУАП");
         universityInfo.put("serviceName", "pro.guap");
-        universityInfo.put("referenceDate", SchedguapApplication.SYNC_TIME);
-        universityInfo.put("referenceWeek", SchedguapApplication.CURRENT_WEEK);
+        universityInfo.put("referenceDate", scheduleUpdate.getSyncTime());
+        universityInfo.put("referenceWeek", scheduleUpdate.getWeek());
 
         return ResponseEntity.ok().body(universityInfo.toString());
     }

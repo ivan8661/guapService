@@ -8,6 +8,8 @@ import com.schedguap.schedguap.SchedguapApplication;
 import com.schedguap.schedguap.Services.DataImport.Entities.*;
 import com.schedguap.schedguap.Services.GUAPUtils;
 import org.apache.commons.codec.digest.DigestUtils;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
@@ -30,16 +32,18 @@ public class ImportService {
     private final LessonRepository lessonRepository;
     private final ProfessorsRepository professorsRepository;
     private final SubjectRepository subjectRepository;
+    private final ScheduleUpdateRepository scheduleUpdateRepository;
 
     @Autowired
     public ImportService(PupilGroupRepository pupilGroupRepository, BuildingRepository buildingRepository,
                          LessonRepository lessonRepository, ProfessorsRepository professorsRepository,
-                         SubjectRepository subjectRepository) {
+                         SubjectRepository subjectRepository, ScheduleUpdateRepository scheduleUpdateRepository) {
         this.buildingRepository = buildingRepository;
         this.pupilGroupRepository = pupilGroupRepository;
         this.professorsRepository = professorsRepository;
         this.subjectRepository = subjectRepository;
         this.lessonRepository = lessonRepository;
+        this.scheduleUpdateRepository = scheduleUpdateRepository;
     }
 
     @Transactional
@@ -122,4 +126,24 @@ public class ImportService {
             }
         }
     }
+
+    public void updateScheduleInfo() throws JSONException {
+
+        ResponseEntity<String> universityInfo = new RestTemplate().exchange("https://api.guap.ru/rasp/custom/get-sem-info",
+                HttpMethod.GET, HttpEntity.EMPTY, new ParameterizedTypeReference<>(){});
+
+        if(!universityInfo.getStatusCode().is2xxSuccessful())
+            return;
+
+        JSONObject jsonUniversityInfo = new JSONObject(universityInfo.getBody());
+        ScheduleUpdate scheduleUpdate = new ScheduleUpdate();
+        String week = jsonUniversityInfo.optBoolean("IsWeekOdd") ? "odd" : "even";
+
+        scheduleUpdate.setName("GUAP");
+        scheduleUpdate.setWeek(week);
+        scheduleUpdate.setSyncTime(System.currentTimeMillis()/1000);
+
+        scheduleUpdateRepository.save(scheduleUpdate);
+    }
+
 }
