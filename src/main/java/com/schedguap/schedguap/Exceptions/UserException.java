@@ -3,6 +3,8 @@ package com.schedguap.schedguap.Exceptions;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.springframework.http.HttpStatus;
 
+import java.util.HashMap;
+
 @JsonIgnoreProperties({"httpStatus", "stackTrace", "localizedMessage", "suppressed", "cause"})
 public class UserException extends Exception {
     private UserExceptionType type;
@@ -31,6 +33,17 @@ public class UserException extends Exception {
         this.type = type;
         this.message = type.getDefaultMessage();
         this.data = null;
+    }
+
+    // Костыль чтоб не словить пустой ответ из-за ошибки сериализации
+    public UserException(UserExceptionType type, Exception exception) {
+        this.type = type;
+        this.message = exception.getLocalizedMessage();
+        HashMap<String, Object> debugInfo = new HashMap<>();
+        debugInfo.put("message", exception.getMessage());
+        debugInfo.put("stackTrace", exception.getStackTrace());
+        debugInfo.put("class", exception.getClass().toString());
+        this.data = debugInfo;
     }
 
     public int getId() {

@@ -50,7 +50,7 @@ public class AuthorizationService {
 
 
 
-        String userInfo =userInfoEntity.getBody();
+        String userInfo = userInfoEntity.getBody();
         String start = "window.__initialServerData = ";
         if (userInfo != null) {
             userInfo = userInfo.substring(userInfo.indexOf(start) + start.length());
@@ -103,7 +103,7 @@ public class AuthorizationService {
         headers.set("Upgrade-Insecure-Requests", "1");
         HttpEntity entity = new HttpEntity(headers);
 
-        ResponseEntity<String>guapAnswer =new RestTemplate().exchange("https://pro.guap.ru/exters/", HttpMethod.GET, entity, String.class);
+        ResponseEntity<String>guapAnswer = new RestTemplate().exchange("https://pro.guap.ru/exters/", HttpMethod.GET, entity, String.class);
 
         String cookie = guapAnswer.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
 
