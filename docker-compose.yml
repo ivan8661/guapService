@@ -1,7 +1,7 @@
 version: "3"
 services:
   guap:
-    image: schedapp/suai:latest
+    image: docker.poltorakov.ru/schedapp/suai:latest
     restart: on-failure
     environment:
       - SPRING_APPLICATION_NAME=guap
