@@ -76,7 +76,9 @@ public class AuthorizationService {
         user.put("lastname", userGuap.optString("lastname"));
         user.put("firstname", userGuap.optString("firstname"));
         user.put("cookie", cookie);
+        user.put("externalId", userGuap.get("user_id"));
         user.put("universityId", "GUAP");
+
         if(pupilGroupRepository.findPupilGroupByName(numberGroup).isPresent()) {
             PupilGroup pupilGroup = pupilGroupRepository.findPupilGroupByName(numberGroup).get();
             user.put("groupId", pupilGroup.getId());
