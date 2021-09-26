@@ -30,11 +30,10 @@ public class ProguapController {
     public ResponseEntity<ListAnswer<DeadlineSource>> deadlineSources(@RequestBody String body) throws JSONException, UserException {
         JSONObject jsonBody = new JSONObject(body);
         String userId, userCookie;
-        if(jsonBody.optString("userId") != null && jsonBody.optString("cookie") != null){
-            userId = jsonBody.optString("userId");
+        if(jsonBody.optString("cookie") != null){
             userCookie = jsonBody.optString("cookie");
 
-            List<DeadlineSource> sources = proguapService.getDeadlineSources(userId, userCookie).stream().collect(Collectors.toList());
+            List<DeadlineSource> sources = proguapService.getDeadlineSources(userCookie).stream().collect(Collectors.toList());
             return ResponseEntity.ok().body(new ListAnswer(sources, sources.size()));
         } else {
             throw new UserException(UserExceptionType.BAD_REQUEST);
@@ -45,14 +44,13 @@ public class ProguapController {
     public ResponseEntity<ListAnswer<Deadline>> deadlines(@RequestBody String body) throws JSONException, UserException {
         JSONObject jsonBody = new JSONObject(body);
 
-        String userId = jsonBody.optString("userId");
         String userCookie = jsonBody.optString("cookie");
         String sourceId = jsonBody.optString("sourceId");
 
         System.out.println(sourceId);
 
-        if(userId != null && userCookie != null) {
-            List<Deadline> sources = proguapService.getDeadlines(userId, userCookie, sourceId);
+        if(userCookie != null) {
+            List<Deadline> sources = proguapService.getDeadlines(userCookie, sourceId);
             return ResponseEntity.ok().body(new ListAnswer(sources, sources.size()));
         } else {
             throw new UserException(UserExceptionType.BAD_REQUEST);

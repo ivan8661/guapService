@@ -31,15 +31,15 @@ public class ProguapService {
     @Autowired
     private SubjectRepository subjectRepository;
 
-    public Set<DeadlineSource> getDeadlineSources(String userId, String cookie) {
-        List<ProGuapTask> tasks = fetchAllDeadlines(userId, cookie).getTasks();
+    public Set<DeadlineSource> getDeadlineSources(String cookie) throws UserException {
+        List<ProGuapTask> tasks = fetchAllDeadlines(cookie).getTasks();
 
         return tasks.stream().map( task -> task.getSource()).collect(Collectors.toSet());
     }
 
-    public List<Deadline> getDeadlines(String userId, String cookie, String sourceId) {
+    public List<Deadline> getDeadlines(String cookie, String sourceId) throws UserException {
 
-        List<ProGuapTask> tasks = fetchAllDeadlines(userId, cookie).getTasks();
+        List<ProGuapTask> tasks = fetchAllDeadlines(cookie).getTasks();
 
         return tasks.stream()
                 .filter( task ->  {
@@ -50,17 +50,46 @@ public class ProguapService {
                 .collect(Collectors.toList());
     }
 
-    private DeadlinesResponse fetchAllDeadlines(String userId, String cookie) {
-
+    private DeadlinesResponse fetchAllDeadlines(String cookie) throws UserException {
         // Сюда мы добавляем кэширование в редисе, ключ - кука
+
         HttpHeaders headers = new HttpHeaders();
         headers.set("Cookie", cookie);
         headers.set("Sec-Fetch-Mode", "cors");
         HttpEntity entity = new HttpEntity(headers);
 
+        // fetch user_id
+        String userId = fetchUserId(cookie);
+
         String url =  "https://pro.guap.ru/get-student-tasksdictionaries/?iduser="+ userId;
         ResponseEntity<DeadlinesResponse> deadlines = new RestTemplate().exchange(url, HttpMethod.POST, entity, DeadlinesResponse.class);
         return deadlines.getBody();
+
+    }
+
+    private String fetchUserId(String cookie) throws UserException {
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Cookie", cookie);
+        headers.set("Sec-Fetch-Mode", "cors");
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<String> userInfoEntity = new RestTemplate().exchange("https://pro.guap.ru/inside_s", HttpMethod.GET, entity, String.class);
+
+        String userInfo = userInfoEntity.getBody();
+        String start = "window.__initialServerData = ";
+        if (userInfo != null) {
+            userInfo = userInfo.substring(userInfo.indexOf(start) + start.length());
+            userInfo = userInfo.substring(0, userInfo.indexOf(';'));
+        }
+
+        try {
+            JSONObject userInfoGson = new JSONObject(userInfo);
+            JSONObject userGuap = userInfoGson.getJSONArray("user").getJSONObject(0);
+            return userGuap.get("user_id").toString();
+        } catch (JSONException | NullPointerException e) {
+            throw new UserException(UserExceptionType.FORBIDDEN, "Failed to get current user id");
+        }
     }
 }
 
