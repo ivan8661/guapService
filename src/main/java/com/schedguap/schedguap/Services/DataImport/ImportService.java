@@ -69,7 +69,7 @@ public class ImportService {
         }
 
         for(SubjectEntity subjectGUAP : subjects.getBody()){
-            Subject subject = new Subject(DigestUtils.sha256Hex("guap_subject" + subjectGUAP.getId()), subjectGUAP.getName(), subjectGUAP.getId());
+            Subject subject = new Subject(DigestUtils.sha256Hex("guap_subject" + subjectGUAP.getId()), subjectGUAP.getName());
             subjectRepository.save(subject);
         }
 
