@@ -57,4 +57,20 @@ public class ProguapController {
         }
     }
 
+    @PostMapping("/deadlines/{deadlineId}")
+    public ResponseEntity<Deadline> deadlines(@RequestBody String body, @PathVariable ("deadlineId") String deadlineId) throws JSONException, UserException {
+        JSONObject jsonBody = new JSONObject(body);
+
+        String userCookie = jsonBody.optString("cookie");
+        String sourceId = jsonBody.optString("sourceId");
+
+
+        if(userCookie != null && deadlineId != null) {
+            Deadline deadline = proguapService.getDeadline(userCookie, deadlineId);
+            return ResponseEntity.ok().body(deadline);
+        } else {
+            throw new UserException(UserExceptionType.BAD_REQUEST);
+        }
+    }
+
 }

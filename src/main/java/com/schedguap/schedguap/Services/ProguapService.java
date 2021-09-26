@@ -19,10 +19,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -48,6 +45,23 @@ public class ProguapService {
                 })
                 .map( task -> new Deadline(task, subjectRepository))
                 .collect(Collectors.toList());
+    }
+
+    public Deadline getDeadline(String cookie, String deadlineId) throws UserException {
+        // это прям очень плохое решение, при запросе единичного надо не ходить в кэш, а по id получать из прогуапа ( там больше информации)
+        List<ProGuapTask> tasks = fetchAllDeadlines(cookie).getTasks();
+
+        Optional<Deadline> deadline = tasks
+                .stream()
+                .filter( x-> x.getId().equals(deadlineId))
+                .map(x -> new Deadline(x, subjectRepository))
+                .findFirst();
+
+        if(deadline.isEmpty()) {
+            throw new UserException(UserExceptionType.OBJECT_NOT_FOUND);
+        } else {
+            return  deadline.get();
+        }
     }
 
     private DeadlinesResponse fetchAllDeadlines(String cookie) throws UserException {
