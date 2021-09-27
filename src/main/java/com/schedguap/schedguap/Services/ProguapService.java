@@ -98,7 +98,7 @@ public class ProguapService {
 
     }
 
-    private String fetchUserId(String cookie) throws UserException {
+    public String fetchUserId(String cookie) throws UserException {
         SchedguapApplication.getLog().info("fetching user id");
 
         String cachedUserId = userIdTemplate.boundValueOps(cookie).get();
