@@ -1,17 +1,18 @@
 package com.schedguap.schedguap.Services;
 
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.schedguap.schedguap.Entities.DeadlinesResponse;
 import com.schedguap.schedguap.Entities.Deadline;
 import com.schedguap.schedguap.Entities.DeadlineSource;
 import com.schedguap.schedguap.Entities.ProGuapTask;
-import com.schedguap.schedguap.Entities.Repositories.SubjectRepository;
+import com.schedguap.schedguap.Repositories.SubjectRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Exceptions.UserExceptionType;
-import org.apache.commons.codec.digest.DigestUtils;
+import com.schedguap.schedguap.SchedguapApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 @Service
@@ -27,6 +29,12 @@ public class ProguapService {
 
     @Autowired
     private SubjectRepository subjectRepository;
+
+    @Autowired
+    private RedisTemplate<String, String> userIdTemplate;
+
+    @Autowired
+    private RedisTemplate<String, DeadlinesResponse> proguapTaskListTemplate;
 
     public Set<DeadlineSource> getDeadlineSources(String cookie) throws UserException {
         List<ProGuapTask> tasks = fetchAllDeadlines(cookie).getTasks();
@@ -66,6 +74,13 @@ public class ProguapService {
 
     private DeadlinesResponse fetchAllDeadlines(String cookie) throws UserException {
         // Сюда мы добавляем кэширование в редисе, ключ - кука
+        SchedguapApplication.getLog().info("fetching deadlines for cookie="+cookie);
+        DeadlinesResponse cachedResponse = proguapTaskListTemplate.boundValueOps(cookie).get();
+        if (cachedResponse != null) {
+            SchedguapApplication.getLog().info("returning cached deadlines for cookie="+cookie);
+            return cachedResponse;
+        }
+        SchedguapApplication.getLog().info("no cached deadlines found for cookie="+cookie);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Cookie", cookie);
@@ -76,12 +91,23 @@ public class ProguapService {
         String userId = fetchUserId(cookie);
 
         String url =  "https://pro.guap.ru/get-student-tasksdictionaries/?iduser="+ userId;
-        ResponseEntity<DeadlinesResponse> deadlines = new RestTemplate().exchange(url, HttpMethod.POST, entity, DeadlinesResponse.class);
-        return deadlines.getBody();
+        ResponseEntity<DeadlinesResponse> response = new RestTemplate().exchange(url, HttpMethod.POST, entity, DeadlinesResponse.class);
+        DeadlinesResponse deadlines = response.getBody();
+        proguapTaskListTemplate.boundValueOps(cookie).set(deadlines, 15, TimeUnit.MINUTES);
+        return deadlines;
 
     }
 
     private String fetchUserId(String cookie) throws UserException {
+        SchedguapApplication.getLog().info("fetching user id");
+
+        String cachedUserId = userIdTemplate.boundValueOps(cookie).get();
+        if( cachedUserId != null ) {
+            SchedguapApplication.getLog().info("returning cached user_id="+cachedUserId+" for cookie="+cookie);
+            return cachedUserId;
+        }
+        SchedguapApplication.getLog().info("no cached user_id found for cookie="+cookie);
+
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Cookie", cookie);
@@ -100,20 +126,16 @@ public class ProguapService {
         try {
             JSONObject userInfoGson = new JSONObject(userInfo);
             JSONObject userGuap = userInfoGson.getJSONArray("user").getJSONObject(0);
-            return userGuap.get("user_id").toString();
+
+            String fetchedUserId = userGuap.get("user_id").toString();
+
+            SchedguapApplication.getLog().info("setting cached user_id="+fetchedUserId+" for cookie="+cookie);
+            userIdTemplate.boundValueOps(cookie).set(fetchedUserId, 3, TimeUnit.DAYS);
+            SchedguapApplication.getLog().info("did set cached user_id="+userIdTemplate.boundValueOps(cookie).get()+" for cookie="+cookie);
+            return fetchedUserId;
+
         } catch (JSONException | NullPointerException e) {
             throw new UserException(UserExceptionType.FORBIDDEN, "Failed to get current user id");
         }
     }
 }
-
-class DeadlinesResponse {
-
-    @JsonProperty
-    private List<ProGuapTask> tasks;
-
-    public List<ProGuapTask> getTasks() {
-        return tasks;
-    }
-}
-

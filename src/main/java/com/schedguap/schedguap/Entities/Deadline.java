@@ -3,11 +3,9 @@ package com.schedguap.schedguap.Entities;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
-import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.schedguap.schedguap.Entities.DatabaseEntities.Subject;
-import com.schedguap.schedguap.Entities.Repositories.SubjectRepository;
+import com.schedguap.schedguap.Repositories.SubjectRepository;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.text.ParseException;

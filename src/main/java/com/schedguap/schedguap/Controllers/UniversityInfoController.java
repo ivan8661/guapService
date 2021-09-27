@@ -3,10 +3,9 @@ package com.schedguap.schedguap.Controllers;
 
 import com.schedguap.schedguap.Entities.DatabaseEntities.ScheduleUpdate;
 import com.schedguap.schedguap.Entities.News;
-import com.schedguap.schedguap.Entities.Repositories.ScheduleUpdateRepository;
+import com.schedguap.schedguap.Repositories.ScheduleUpdateRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Exceptions.UserExceptionType;
-import com.schedguap.schedguap.SchedguapApplication;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;

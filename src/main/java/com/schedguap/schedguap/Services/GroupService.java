@@ -4,7 +4,7 @@ package com.schedguap.schedguap.Services;
 import GetGraphQL.QueryParametersBuilder;
 import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
 import com.schedguap.schedguap.Entities.ListAnswer;
-import com.schedguap.schedguap.Entities.Repositories.PupilGroupRepository;
+import com.schedguap.schedguap.Repositories.PupilGroupRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Exceptions.UserExceptionType;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
-import java.util.List;
+
 import java.util.Map;
 import java.util.Optional;
 

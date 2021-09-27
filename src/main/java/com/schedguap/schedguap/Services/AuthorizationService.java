@@ -2,7 +2,7 @@ package com.schedguap.schedguap.Services;
 
 
 import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
-import com.schedguap.schedguap.Entities.Repositories.PupilGroupRepository;
+import com.schedguap.schedguap.Repositories.PupilGroupRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Exceptions.UserExceptionType;
 import org.apache.commons.codec.digest.DigestUtils;

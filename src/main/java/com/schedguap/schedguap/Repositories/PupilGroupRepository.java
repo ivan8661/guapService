@@ -1,6 +1,5 @@
-package com.schedguap.schedguap.Entities.Repositories;
+package com.schedguap.schedguap.Repositories;
 
-import com.schedguap.schedguap.Entities.DatabaseEntities.Professor;
 import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
