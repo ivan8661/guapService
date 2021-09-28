@@ -12,10 +12,31 @@ services:
     networks:
       - eureka_network
       - common_network
+      - redis_link
+    depends_on:
+      - redis
     ports:
       - "8070:8070"
+  redis:
+    image: "redis:alpine"
+    command: redis-server --requirepass aw4cha3vaith
+
+    volumes:
+      - "redis-data:/var/lib/redis"
+      - "redis-conf:/usr/local/etc/redis/redis.conf"
+    environment:
+      - REDIS_REPLICATION_MODE=master
+    networks:
+      - redis_link
+    ports:
+      - "6379:6379"
+
+volumes:
+  redis-data:
+  redis-conf:
 
 networks:
+  redis_link:
   common_network:
     name: common_network
     external: true

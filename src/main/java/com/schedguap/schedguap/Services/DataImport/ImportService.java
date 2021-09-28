@@ -1,10 +1,9 @@
 package com.schedguap.schedguap.Services.DataImport;
 
 import com.schedguap.schedguap.Entities.DatabaseEntities.*;
-import com.schedguap.schedguap.Entities.Repositories.*;
+import com.schedguap.schedguap.Repositories.*;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Exceptions.UserExceptionType;
-import com.schedguap.schedguap.SchedguapApplication;
 import com.schedguap.schedguap.Services.DataImport.Entities.*;
 import com.schedguap.schedguap.Services.GUAPUtils;
 import org.apache.commons.codec.digest.DigestUtils;
@@ -69,7 +68,7 @@ public class ImportService {
         }
 
         for(SubjectEntity subjectGUAP : subjects.getBody()){
-            Subject subject = new Subject(DigestUtils.sha256Hex("guap_subject" + subjectGUAP.getId()), subjectGUAP.getName(), subjectGUAP.getId());
+            Subject subject = new Subject(DigestUtils.sha256Hex("guap_subject" + subjectGUAP.getId()), subjectGUAP.getName());
             subjectRepository.save(subject);
         }
 

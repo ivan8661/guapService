@@ -2,8 +2,8 @@ package com.schedguap.schedguap.Services;
 
 import com.schedguap.schedguap.Entities.DatabaseEntities.Professor;
 import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
-import com.schedguap.schedguap.Entities.Repositories.ProfessorsRepository;
-import com.schedguap.schedguap.Entities.Repositories.PupilGroupRepository;
+import com.schedguap.schedguap.Repositories.ProfessorsRepository;
+import com.schedguap.schedguap.Repositories.PupilGroupRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Entities.ScheduleUser;
 import com.schedguap.schedguap.Exceptions.UserExceptionType;

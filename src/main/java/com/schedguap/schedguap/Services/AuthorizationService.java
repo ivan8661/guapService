@@ -2,10 +2,10 @@ package com.schedguap.schedguap.Services;
 
 
 import com.schedguap.schedguap.Entities.DatabaseEntities.PupilGroup;
-import com.schedguap.schedguap.Entities.Repositories.PupilGroupRepository;
+import com.schedguap.schedguap.Entities.User;
+import com.schedguap.schedguap.Repositories.PupilGroupRepository;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Exceptions.UserExceptionType;
-import org.apache.commons.codec.digest.DigestUtils;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,72 +18,60 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.Optional;
+
 @Service
 public class AuthorizationService {
 
     private PupilGroupRepository pupilGroupRepository;
 
+    @Autowired
+    private ProguapService guapService;
 
     @Autowired
     public AuthorizationService(PupilGroupRepository pupilGroupRepository) {
         this.pupilGroupRepository = pupilGroupRepository;
     }
 
-    public String regGUAPUser(String regData) throws UserException, JSONException {
-
-        JSONObject reg = new JSONObject(regData);
-        String cookie;
-        String login = reg.optString("serviceLogin");
-        String password = reg.optString("servicePassword");
+    public User regGUAPUser(String login, String password) throws UserException, JSONException {
 
         if(login == null || password == null){
             throw new UserException(UserExceptionType.BAD_REQUEST, null, null);
-        } else {
-            cookie = getCookie(login, password);
         }
 
-        HttpHeaders httpHeaders =new HttpHeaders();
+        String cookie = getCookie(login, password);
+
+        String userId = guapService.fetchUserId(cookie);
+        User user = fetchUserInfo(userId, cookie);
+
+        return user;
+    }
+
+    private User fetchUserInfo(String userId, String cookie) throws JSONException {
+        HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("Cookie", cookie);
+        ResponseEntity<String> response = new RestTemplate().exchange("https://pro.guap.ru/getstudentprofile/" + userId, HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
 
-        ResponseEntity<String> userInfoEntity = new RestTemplate().exchange("https://pro.guap.ru/inside_s",
-                HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
+        JSONObject json = new JSONObject(response.getBody());
+        JSONObject userJson = json.getJSONObject("user");
 
+        String groupName = userJson.getString("grnum");
+        PupilGroup pupilGroup = null;
 
-
-        String userInfo = userInfoEntity.getBody();
-        String start = "window.__initialServerData = ";
-        if (userInfo != null) {
-            userInfo = userInfo.substring(userInfo.indexOf(start) + start.length());
-            userInfo = userInfo.substring(0, userInfo.indexOf(';'));
-        }
-        JSONObject userInfoGson = new JSONObject(userInfo);
-        JSONObject userGuap = userInfoGson.getJSONArray("user").getJSONObject(0);
-
-        /*
-         * get group through query to pro.guap by id
-         */
-        ResponseEntity<String> userAnswer = new RestTemplate().exchange("https://pro.guap.ru/getstudentprofile/" + userGuap.get("user_id"),
-                HttpMethod.GET, new HttpEntity<>(httpHeaders), String.class);
-        JSONObject userAnswerGson = new JSONObject(userAnswer.getBody());
-        String numberGroup = userAnswerGson.getJSONObject("user").getString("grnum");
-        /*_________________________________________*/
-
-        JSONObject user = new JSONObject();
-
-        user.put("_id", DigestUtils.sha256Hex(login));
-        user.put("serviceLogin", login);
-        user.put("servicePassword", password);
-        user.put("lastname", userGuap.optString("lastname"));
-        user.put("firstname", userGuap.optString("firstname"));
-        user.put("cookie", cookie);
-        user.put("universityId", "GUAP");
-        if(pupilGroupRepository.findPupilGroupByName(numberGroup).isPresent()) {
-            PupilGroup pupilGroup = pupilGroupRepository.findPupilGroupByName(numberGroup).get();
-            user.put("groupId", pupilGroup.getId());
-            user.put("groupName", pupilGroup.getName());
+        Optional<PupilGroup> optGroup = pupilGroupRepository.findPupilGroupByName(groupName);
+        if(optGroup.isPresent()) {
+            pupilGroup = optGroup.get();
         }
 
-        return user.toString();
+        return new User(
+                userJson.optString("firstname"),
+                userJson.optString("lastname"),
+                userJson.optString("image"),
+                userJson.optString("id"),
+                cookie,
+                pupilGroup.getId()
+        );
+
     }
 
 

@@ -1,6 +1,7 @@
 package com.schedguap.schedguap.Controllers;
 
 
+import com.schedguap.schedguap.Entities.User;
 import com.schedguap.schedguap.Exceptions.UserException;
 import com.schedguap.schedguap.Services.AuthorizationService;
 import org.json.JSONException;
@@ -23,7 +24,12 @@ public class UserController {
     }
 
     @PostMapping("/auth")
-    public ResponseEntity<String> regUser(@RequestBody String regData) throws JSONException, UserException {
-        return ResponseEntity.ok().body(authorizationService.regGUAPUser(regData));
+    public ResponseEntity<User> regUser(@RequestBody String regData) throws JSONException, UserException {
+        JSONObject reg = new JSONObject(regData);
+        String cookie;
+        String login = reg.optString("serviceLogin");
+        String password = reg.optString("servicePassword");
+        User user = authorizationService.regGUAPUser(login, password);
+        return ResponseEntity.ok().body(user);
     }
 }

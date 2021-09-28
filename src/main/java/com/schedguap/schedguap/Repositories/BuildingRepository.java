@@ -1,4 +1,4 @@
-package com.schedguap.schedguap.Entities.Repositories;
+package com.schedguap.schedguap.Repositories;
 
 
 import com.schedguap.schedguap.Entities.DatabaseEntities.Building;
