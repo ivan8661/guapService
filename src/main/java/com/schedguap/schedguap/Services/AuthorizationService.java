@@ -56,11 +56,12 @@ public class AuthorizationService {
         JSONObject userJson = json.getJSONObject("user");
 
         String groupName = userJson.getString("grnum");
-        PupilGroup pupilGroup = null;
+
+        String pupilGroup = null;
 
         Optional<PupilGroup> optGroup = pupilGroupRepository.findPupilGroupByName(groupName);
-        if(optGroup.isPresent()) {
-            pupilGroup = optGroup.get();
+        if(optGroup.map(PupilGroup::getId).isPresent()) {
+            pupilGroup = optGroup.get().getId();
         }
 
         return new User(
@@ -69,7 +70,7 @@ public class AuthorizationService {
                 userJson.optString("image"),
                 userJson.optString("id"),
                 cookie,
-                pupilGroup.getId()
+                pupilGroup
         );
 
     }
@@ -91,7 +92,7 @@ public class AuthorizationService {
         headers.set("Upgrade-Insecure-Requests", "1");
         HttpEntity entity = new HttpEntity(headers);
 
-        ResponseEntity<String>guapAnswer = new RestTemplate().exchange("https://pro.guap.ru/exters/", HttpMethod.GET, entity, String.class);
+        ResponseEntity<String> guapAnswer = new RestTemplate().exchange("https://pro.guap.ru/exters/", HttpMethod.GET, entity, String.class);
 
         String cookie = guapAnswer.getHeaders().getFirst(HttpHeaders.SET_COOKIE);
 

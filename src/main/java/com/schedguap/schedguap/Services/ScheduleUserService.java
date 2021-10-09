@@ -31,15 +31,16 @@ public class ScheduleUserService {
     public ScheduleUser getScheduleUser(String id) throws UserException {
         Optional<PupilGroup> pupilGroup = pupilGroupRepository.findById(id);
         Optional<Professor> professor = professorsRepository.findById(id);
-        if(pupilGroup.isEmpty() && professor.isEmpty()) {
-            throw new UserException(UserExceptionType.OBJECT_NOT_FOUND, "ScheduleUser doesn't exist", null);
+
+        if(pupilGroup.isPresent()) {
+            return new ScheduleUser(pupilGroup.get().getId(), pupilGroup.get().getName());
         }
 
-        return pupilGroup.map(
-                group -> new ScheduleUser(group.getId(), group.getName()))
-                .orElseGet(() -> new ScheduleUser(professor.get().getId(), professor.get().getName())
-                );
+        if(professor.isPresent()) {
+            return new ScheduleUser(professor.get().getId(), professor.get().getName());
+        }
 
+        throw new UserException(UserExceptionType.OBJECT_NOT_FOUND, "ScheduleUser doesn't exist", null);
     }
 
 
