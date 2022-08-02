@@ -19,6 +19,9 @@ public interface ProfessorsRepository extends CrudRepository<Professor, String>,
 
     Optional<Professor> findById(String id);
 
+    @Override
+    void deleteAll();
+
     List<Professor> getAllBy();
 
     Page<Professor> findAll(Specification<Professor> spc, Pageable pageable);

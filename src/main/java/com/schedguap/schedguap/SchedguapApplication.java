@@ -9,8 +9,8 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 
 
 
-@SpringBootApplication
 @EnableEurekaClient
+@SpringBootApplication()
 public class SchedguapApplication {
 
     static final Logger log =  LoggerFactory.getLogger(SchedguapApplication.class);

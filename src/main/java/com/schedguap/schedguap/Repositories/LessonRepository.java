@@ -15,6 +15,8 @@ public interface LessonRepository extends CrudRepository<Lesson, String> {
 
     List<Lesson> getAllBy();
 
+    void deleteAll();
+
 
     List<Lesson> getAllByGroups(PupilGroup pupilGroup);
 

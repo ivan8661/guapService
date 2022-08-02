@@ -20,12 +20,8 @@ import java.util.Optional;
 public class ProfessorService {
 
 
-    private final ProfessorsRepository professorsRepository;
-
     @Autowired
-    public ProfessorService(ProfessorsRepository professorsRepository) {
-        this.professorsRepository = professorsRepository;
-    }
+    private ProfessorsRepository professorsRepository;
 
     public ListAnswer<Professor> getProfessors(Map<String, String> params) throws NoSuchFieldException {
 

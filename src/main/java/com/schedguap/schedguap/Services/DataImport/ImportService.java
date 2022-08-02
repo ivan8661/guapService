@@ -15,6 +15,7 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
@@ -45,7 +46,27 @@ public class ImportService {
         this.scheduleUpdateRepository = scheduleUpdateRepository;
     }
 
+    @Scheduled(cron="0 20 14 * * *")
     @Transactional
+    public void generalImportByCronTime() throws JSONException, UserException {
+        cleanAllDataFromDB();
+        downloadData();
+        downloadLessons();
+        updateScheduleInfo();
+    }
+
+
+    public void cleanAllDataFromDB() {
+        buildingRepository.deleteAll();
+        lessonRepository.deleteAll();
+        professorsRepository.deleteAll();
+        pupilGroupRepository.deleteAll();
+        subjectRepository.deleteAll();
+        scheduleUpdateRepository.deleteAll();
+    }
+
+
+
     public boolean downloadData() throws UserException {
 
         HttpEntity entity = new HttpEntity(new HttpHeaders());
@@ -141,7 +162,6 @@ public class ImportService {
         scheduleUpdate.setName("GUAP");
         scheduleUpdate.setWeek(week);
         scheduleUpdate.setSyncTime(System.currentTimeMillis()/1000);
-
         scheduleUpdateRepository.save(scheduleUpdate);
     }
 

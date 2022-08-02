@@ -13,5 +13,7 @@ public interface SubjectRepository extends CrudRepository<Subject, String> {
 
     List<Subject> findByName(String name);
 
+    @Override
+    void deleteAll();
     Optional<Subject> findById(String id);
 }

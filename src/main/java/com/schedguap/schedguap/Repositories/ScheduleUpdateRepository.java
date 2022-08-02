@@ -9,6 +9,9 @@ import org.springframework.stereotype.Repository;
 public interface ScheduleUpdateRepository extends CrudRepository<ScheduleUpdate, String> {
 
 
+    @Override
+    void deleteAll();
+
     public ScheduleUpdate findByName(String name);
 
 }
